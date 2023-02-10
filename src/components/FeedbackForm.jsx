@@ -3,11 +3,35 @@ import RatingSelect from './RatingSelect'
 import Button from './shared/Button'
 import Card from './shared/Card'
 
-function FeedbackForm() {
+function FeedbackForm({ handleAdd }) {
   const [text, setText] = useState('')
   const [rating, setRating] = useState(10)
   const [btnDisabled, setBtnDisabled] = useState(true)
   const [message, setMessage] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (text.trim().length > 10) {
+      const newFeedback = {
+        text,
+        rating
+      }
+
+      handleAdd(newFeedback)
+
+      // if (feedbackEdit.edit === true) {
+      //   updateFeedback(feedbackEdit.item.id, newFeedback)
+      // } else {
+      //   addFeedback(newFeedback)
+      // }
+
+      // NOTE: reset to default state after submission
+      setBtnDisabled(true)
+      setRating(10)
+      setText('')
+    }
+  }
+
 
   const handleTextChange = ({ target: { value } }) => {
     if (value === '') {

@@ -7,6 +7,8 @@ import FeedbackData from './data/FeedbackData'
 import FeedbackStats from './components/FeedbackStats';
 import FeedbackForm from './components/FeedbackForm';
 
+import { motion, AnimatePresence } from 'framer-motion'
+
 function App() {
   const [feedback, setFeedback] = useState(FeedbackData)
 

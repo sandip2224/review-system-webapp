@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FeedbackContext from '../context/FeedbackContext'
 import RatingSelect from './RatingSelect'
 import Button from './shared/Button'
@@ -10,7 +10,15 @@ function FeedbackForm() {
   const [btnDisabled, setBtnDisabled] = useState(true)
   const [message, setMessage] = useState('')
 
-  const { addFeedback } = useContext(FeedbackContext)
+  const { addFeedback, updateFeedback, feedbackEdit } = useContext(FeedbackContext)
+
+  useEffect(() => {
+    if (feedbackEdit.edit === true) {
+      setText(feedbackEdit.item.text)
+      setRating(feedbackEdit.item.rating)
+      setBtnDisabled(false)
+    }
+  }, [feedbackEdit])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -20,13 +28,12 @@ function FeedbackForm() {
         rating
       }
 
-      addFeedback(newFeedback)
-
-      // if (feedbackEdit.edit === true) {
-      //   updateFeedback(feedbackEdit.item.id, newFeedback)
-      // } else {
-      //   addFeedback(newFeedback)
-      // }
+      if (feedbackEdit.edit === true) {
+        updateFeedback(feedbackEdit.item.id, newFeedback)
+      }
+      else {
+        addFeedback(newFeedback)
+      }
 
       // NOTE: reset to default state after submission
       setBtnDisabled(true)
@@ -34,7 +41,6 @@ function FeedbackForm() {
       setText('')
     }
   }
-
 
   const handleTextChange = ({ target: { value } }) => {
     if (value === '') {

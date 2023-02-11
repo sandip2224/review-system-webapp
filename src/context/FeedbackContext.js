@@ -6,10 +6,25 @@ const FeedbackContext = createContext()
 
 export const FeedbackProvider = ({ children }) => {
   const [feedback, setFeedback] = useState(FeedbackData)
+  const [feedbackEdit, setFeedbackEdit] = useState({
+    item: {},
+    edit: false
+  })
 
   const addFeedback = (newFeedback) => {
     newFeedback.id = uuidv4()
     setFeedback([newFeedback, ...feedback])
+  }
+
+  const editFeedback = (item) => {
+    setFeedbackEdit({
+      item,
+      edit: true
+    })
+  }
+
+  const updateFeedback = (id, updItem) => {
+    setFeedback(feedback.map(item => (item.id === id ? updItem : item)))
   }
 
   const deleteFeedback = (id) => {
@@ -21,7 +36,10 @@ export const FeedbackProvider = ({ children }) => {
   return <FeedbackContext.Provider value={{
     feedback,
     addFeedback,
-    deleteFeedback
+    editFeedback,
+    updateFeedback,
+    deleteFeedback,
+    feedbackEdit
   }}>
     {children}
   </FeedbackContext.Provider>

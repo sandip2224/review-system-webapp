@@ -11,9 +11,9 @@
       "text": "This is feedback item 2 coming from the backend"
     },
     {
-      "text": "Updated all packages to latest",
+      "id": 4,
       "rating": 6,
-      "id": 4
+      "text": "Updated all packages to latest"
     }
   ]
 }

@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import FeedbackData from '../data/FeedbackData'
 
 const FeedbackContext = createContext()
@@ -38,14 +37,31 @@ export const FeedbackProvider = ({ children }) => {
   }
 
   const editFeedback = (item) => {
+
     setFeedbackEdit({
       item,
       edit: true
     })
   }
 
-  const updateFeedback = (id, updItem) => {
-    setFeedback(feedback.map(item => (item.id === id ? updItem : item)))
+  const updateFeedback = async (id, updItem) => {
+    const response = await fetch(`/feedback/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updItem),
+    })
+
+    const data = await response.json()
+
+    // NOTE: no need to spread data and item
+    setFeedback(feedback.map((item) => (item.id === id ? data : item)))
+
+    setFeedbackEdit({
+      item: {},
+      edit: false,
+    })
   }
 
   const deleteFeedback = async (id) => {

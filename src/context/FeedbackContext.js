@@ -14,7 +14,7 @@ export const FeedbackProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const resp = await fetch('http://localhost:5000/feedback?_sort=id&_order=desc')
+      const resp = await fetch('/feedback?_sort=id&_order=desc')
       const data = await resp.json()
 
       setFeedback(data)
@@ -25,8 +25,17 @@ export const FeedbackProvider = ({ children }) => {
   }, [])
 
 
-  const addFeedback = (newFeedback) => {
-    newFeedback.id = uuidv4()
+  const addFeedback = async (newFeedback) => {
+    const resp = await fetch('/feedback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newFeedback)
+    })
+
+    const data = await resp.json()
+
     setFeedback([newFeedback, ...feedback])
   }
 
